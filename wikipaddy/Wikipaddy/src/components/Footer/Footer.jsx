@@ -17,7 +17,7 @@ const Footer = () => {
           >
             GitHub
           </a>
-          <span>© {new Date().getFullYear()}</span>
+          <span>© 2024</span>
         </div>
       </div>
     </footer>
