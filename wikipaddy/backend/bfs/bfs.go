@@ -193,7 +193,12 @@ func (wr *WikiRacer) getWithTimeout(url string, timeout time.Duration) (*http.Re
 	client := &http.Client{
 		Timeout: timeout,
 	}
-	return client.Get(url)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("User-Agent", "WikiPaddy/1.0 (educational project; https://github.com/caernations/Tubes2_WikiPaddy)")
+	return client.Do(req)
 }
 
 func (wr *WikiRacer) buildPath() []string {

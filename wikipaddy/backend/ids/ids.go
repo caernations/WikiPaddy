@@ -75,11 +75,19 @@ func (wr *WikiRacerIDS) fetchLinks(pageURL string) ([]string, error) {
 		}
 	}
 
-	resp, err := http.Get(pageURL)
+	req, err := http.NewRequest("GET", pageURL, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("User-Agent", "WikiPaddy/1.0 (educational project; https://github.com/caernations/Tubes2_WikiPaddy)")
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("fetching page %s failed with status: %d", pageURL, resp.StatusCode)
+	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
