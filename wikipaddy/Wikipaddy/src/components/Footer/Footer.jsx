@@ -1,20 +1,27 @@
-import React from 'react'
-import './Footer.css'
+import React from 'react';
 
-const Footer = ({theme}) => {
+const Footer = () => {
   return (
-    <div className={`footer ${theme}`}>
-      <div className="waves">
-        <div className={`wave ${theme}`} id='wave1'></div>
-        <div className={`wave ${theme}`} id='wave2'></div>
-        <div className={`wave ${theme}`} id='wave3'></div>
-        <div className={`wave ${theme}`} id='wave4'></div>
+    <footer className="border-t border-black/5 dark:border-white/5">
+      <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-ink-900/60 dark:text-white/50">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-md bg-ink-900 dark:bg-white" />
+          <span>wikipaddy · IF2211 Strategi Algoritma</span>
+        </div>
+        <div className="flex items-center gap-5">
+          <a
+            href="https://github.com/caernations/Tubes2_WikiPaddy"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-ink-900 dark:hover:text-white"
+          >
+            GitHub
+          </a>
+          <span>© {new Date().getFullYear()}</span>
+        </div>
       </div>
-      <div className={`footer-content ${theme}`}>
-        <p>Copyright © 2024 Wikipaddy. All rights reserved.</p>
-      </div>    
-    </div>
-  )
-}
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;

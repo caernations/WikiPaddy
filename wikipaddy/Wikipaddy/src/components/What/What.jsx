@@ -1,116 +1,86 @@
-import React, { useEffect, useRef } from 'react';
-import './What.css';
-import { motion, useScroll, useTransform } from "framer-motion";
-import wikipedia from './../../assets/wikipedia-logo.png';
+import React from 'react';
 
-const TextWrapper = ({children}) => {
-  const textRef = useRef(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: textRef,
-    offset: ["start end", "end start"],
-  });
+const ALGOS = [
+  {
+    id: 'BFS',
+    title: 'Breadth-First Search',
+    desc: 'Explores layer by layer. Guaranteed to find the shortest path.',
+    complexity: 'O(b^d)',
+    tag: 'Optimal',
+  },
+  {
+    id: 'IDS',
+    title: 'Iterative Deepening',
+    desc: 'Repeated DFS with growing depth limit. Memory-efficient.',
+    complexity: 'O(b^d)',
+    tag: 'Space-saving',
+  },
+  {
+    id: 'Bi-BFS',
+    title: 'Bidirectional BFS',
+    desc: 'Searches from both ends simultaneously. Often the fastest.',
+    complexity: 'O(b^(d/2))',
+    tag: 'Fastest',
+  },
+];
 
-  const scrollYProgressWithOffset = useTransform(scrollYProgress, value => value );
-
-  const opacity = useTransform(scrollYProgressWithOffset, [1, 0.8, 0], [1, 0.8, 0]);
-  const x = useTransform(scrollYProgressWithOffset, [1, 0.4, 0], [0, 0, 1000]);
-  // const colorChange = useTransform(
-  //   scrollYProgressWithOffset,
-  //   [0, 0.2, 0.4, 0.6, 0.8, 1],
-  //   [
-  //     "hsla(180, 7%, 75%, 0.9)",
-  //     "hsla(180, 7%, 75%, 0.9)",
-  //     "#ffffff",
-  //     "#ffffff",
-  //     "#ffffff",
-  //     "#ffffff",
-  //   ]
-  // );
-
+const What = () => {
   return (
-    <div ref={textRef}>
-      <motion.p style={{ opacity, x}}>{children}</motion.p>
-    </div>
-  );
-};
+    <section id="what" className="py-20 border-t border-black/5 dark:border-white/5">
+      <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-2xl">
+          <div className="text-xs font-mono uppercase tracking-widest text-ink-900/50 dark:text-white/50">Algorithms</div>
+          <h2 className="font-display text-4xl md:text-5xl font-bold mt-2">Three ways to search the graph.</h2>
+          <p className="mt-4 text-ink-900/60 dark:text-white/60 text-lg">
+            Each strategy explores Wikipedia&apos;s link graph differently — pick the one that matches your query.
+          </p>
+        </div>
 
-const LogoWrapper = ({photo}) => {
-  const textRef = useRef(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: textRef,
-    offset: ["start end", "end start"],
-  });
+        <div className="mt-12 grid md:grid-cols-3 gap-5">
+          {ALGOS.map((a) => (
+            <div
+              key={a.id}
+              className="rounded-3xl bg-white dark:bg-ink-800 border border-black/5 dark:border-white/5 p-7"
+            >
+              <div className="w-10 h-10 rounded-xl bg-black/5 dark:bg-white/5 text-ink-900/80 dark:text-white/80 flex items-center justify-center mb-4">
+                <span className="font-mono font-bold text-[11px]">{a.id}</span>
+              </div>
+              <h3 className="font-display text-xl font-bold">{a.title}</h3>
+              <p className="mt-2 text-sm text-ink-900/60 dark:text-white/60">{a.desc}</p>
+              <div className="mt-5 flex items-center gap-3 text-xs text-ink-900/50 dark:text-white/50">
+                <span className="font-mono">{a.complexity}</span>
+                <span>·</span>
+                <span>{a.tag}</span>
+              </div>
+            </div>
+          ))}
+        </div>
 
-  const scrollYProgressWithOffset = useTransform(scrollYProgress, value => value );
-
-  const opacity = useTransform(scrollYProgressWithOffset, [1, 0.8, 0], [1, 1, 1]);
-  const x = useTransform(scrollYProgressWithOffset, [1, 0.5, 0], [0, 0, 500]);
-
-  return (
-    <div ref={textRef}>
-      <motion.img src={wikipedia} style={{ opacity, x}}>{photo}</motion.img>
-    </div>
-  );
-};
-
-const What = ({ theme }) => {
-  const textRef = useRef(null);
-  const howToUseRef = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          textRef.current.style.opacity = 0;
-        } else {
-          textRef.current.style.opacity = 1;
-        }
-      },
-      { threshold: 0.2 } 
-    );
-
-    if (howToUseRef.current) {
-      observer.observe(howToUseRef.current);
-    }
-
-    return () => {
-      if (howToUseRef.current) {
-        observer.unobserve(howToUseRef.current);
-      }
-    };
-  }, []);
-
-  return (
-    <div className={`what ${theme}`}>
-      <div ref={textRef} className={`text ${theme}`} style={{ transition: 'opacity 0.5s' }}>
-        <TextWrapper><h1>What</h1></TextWrapper>
-        <TextWrapper><h1>Is</h1></TextWrapper>
-        <TextWrapper><h1>Wikipaddy</h1></TextWrapper>
-        <TextWrapper><h1>?</h1></TextWrapper>
-        <div className={`text-p ${theme}`}>
-          <TextWrapper>
-            <p>
-              Wikipaddy adalah sebuah projek dimana pengguna memberikan dua halaman Wikipedia yang berbeda dan wikipaddy akan mencari jalan terpendek untuk sampai dari satu halaman ke halaman lainnya hanya dengan mengikuti tautan-tautan dalam artikel tersebut. Tujuan dari proyek ini adalah untuk menguji kecepatan algoritma IDS dan BFS dalam menavigasi dan mencari informasi di Wikipedia.
-            </p>
-          </TextWrapper>
+        <div className="mt-14 rounded-3xl bg-white dark:bg-ink-800 border border-black/5 dark:border-white/5 p-8">
+          <div className="grid md:grid-cols-[1fr_auto] gap-8 items-center">
+            <div>
+              <div className="text-xs font-mono uppercase tracking-widest text-ink-900/50 dark:text-white/50">How to use</div>
+              <h3 className="font-display text-2xl md:text-3xl font-bold mt-2">Three steps to a path.</h3>
+              <ol className="mt-4 space-y-2 text-ink-900/70 dark:text-white/70">
+                <li className="flex gap-3"><span className="font-mono text-sm text-ink-900/40 dark:text-white/40">01</span> Enter two Wikipedia article titles.</li>
+                <li className="flex gap-3"><span className="font-mono text-sm text-ink-900/40 dark:text-white/40">02</span> Pick BFS, IDS, or Bi-BFS.</li>
+                <li className="flex gap-3"><span className="font-mono text-sm text-ink-900/40 dark:text-white/40">03</span> Submit, then follow the hops.</li>
+              </ol>
+            </div>
+            <div className="justify-self-end hidden md:block">
+              <div className="w-24 h-24 rounded-3xl bg-black/5 dark:bg-white/5 flex items-center justify-center">
+                <svg viewBox="0 0 24 24" className="w-10 h-10 text-ink-900/70 dark:text-white/70" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="6" cy="6" r="2.5" />
+                  <circle cx="18" cy="6" r="2.5" />
+                  <circle cx="12" cy="18" r="2.5" />
+                  <path d="M8 7l3 9M16 7l-3 9" strokeLinecap="round" />
+                </svg>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div ref={howToUseRef} className={`how-to-use ${theme}`}>
-        <div className='logo-wiki'>
-          <LogoWrapper style={{zIndex: '20'}}>
-          </LogoWrapper>
-        </div>
-        <div className={`how-to-use-text ${theme}`}>
-              <p>
-                1. Masukan 2 judul wikipedia yang berbeda <br></br>
-                2. Pilih Algoritma antara IDS dan BFS <br></br>
-                3. Mulai pencarian dengan submit
-              </p>
-        </div>
-      </div>
-    </div>
+    </section>
   );
 };
 
